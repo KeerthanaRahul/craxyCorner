@@ -1,16 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { MapPin, Calendar } from 'lucide-react';
-import Hero from '../components/Home/Hero';
-import FeaturedItems from '../components/Home/FeaturedItems';
-import About from '../components/Home/About';
-import Testimonials from '../components/Home/Testimonials';
+import { MapPin, Calendar, HelpCircle } from 'lucide-react';
 
+// Components
+import Hero from '../components/home/Hero';
+import FeaturedItems from '../components/home/FeaturedItems';
+import About from '../components/home/About';
+import Testimonials from '../components/home/Testimonials';
 
-const Home = () => {
+const Home = ({ user }) => {
   return (
     <div>
+      {/* Personalized Welcome Banner */}
+      {user && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-primary-800 to-primary-700 text-white py-3 mt-16"
+        >
+          <div className="container-custom text-center">
+            <p className="text-sm md:text-base">
+              Welcome back, <span className="font-semibold">{user.name.split(' ')[0]}</span>! 
+              Ready for another amazing coffee experience? ☕
+            </p>
+          </div>
+        </motion.div>
+      )}
+      
       <Hero />
       <FeaturedItems />
       <About />
@@ -40,9 +57,9 @@ const Home = () => {
               <MapPin className="mr-2 h-5 w-5" />
               Find Us
             </Link>
-            <Link to="/reservations" className="btn bg-secondary-500 text-white hover:bg-secondary-600 flex items-center justify-center">
-              <Calendar className="mr-2 h-5 w-5" />
-              Reserve a Table
+            <Link to="/support" className="btn bg-secondary-500 text-white hover:bg-secondary-600 flex items-center justify-center">
+              <HelpCircle className="mr-2 h-5 w-5" />
+              Need Help?
             </Link>
           </div>
         </motion.div>

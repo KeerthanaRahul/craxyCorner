@@ -36,9 +36,6 @@ const Hero = () => {
               Explore Our Menu
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Link to="/reservations" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary-800">
-              Book a Table
-            </Link>
           </div>
         </motion.div>
       </div>

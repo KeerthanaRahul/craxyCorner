@@ -1,30 +1,18 @@
+import react, { useState, useEffect } from 'react';
 import { createTheme, CssBaseline, ThemeProvider, Container,Paper} from "@material-ui/core"
 import HomeScreen from "./Screens/HomeScreen"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import './App.css'
-import ChooseScreen from "./Screens/ChooseScreen";
-import  CartProvider  from './CartContext';
-
-import MainMenu from "./MainMenu";
-import CheckoutScreen from "./CheckoutScreen";
-import   OrderConfirmationScreen from "../OrderConfirmationScreen";
-
- // Not using destructuring unless it's a named export
-
-import { menu } from "framer-motion/client";
-import CartScreen from "./CartScreen";
-import AdminPage from "./components/AdminPage";
-import AdminOrdersPage from "./AdminOrdersPage";
-import PaymentScreen from "./PaymentScreen";
-import AdminLoginPage from "./Screens/AdminLoginPage";
 import Home from "./Pages/Home";
 import Menu from "./Pages/Menu";
-import Reservations from "./Pages/Reservations";
 import Gallery from "./Pages/Gallery";
 import Contact from "./Pages/Contact";
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
+import Cart from "./Pages/Cart";
+import Support from "./Pages/Support";
+import Landing from './Pages/Landing';
 
 
 const theme= createTheme({
@@ -46,48 +34,64 @@ const theme= createTheme({
 
 
 function App() {
+
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is already registered
+    const storedUser = localStorage.getItem('cafeUser');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setUser(userData);
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+        localStorage.removeItem('cafeUser');
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleUserRegistered = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('cafeUser');
+    setUser(null);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-800 mx-auto mb-4"></div>
+          <p className="text-accent-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show landing page if user is not registered
+  if (!user) {
+    return <Landing onUserRegistered={handleUserRegistered} />;
+  }
   
   return (
-   
-    // <ThemeProvider theme={theme}>
-      
-    // <CssBaseline/>
-    // <Container>
-    //   <Paper>
-    //      <CartProvider>
-    //     <Routes>
-    //       <Route path='/' element={<AdminLoginPage></AdminLoginPage>}></Route>
-    //     <Route path='/home' element={<HomeScreen></HomeScreen>}></Route>
-    //     <Route path='/choose' element={<ChooseScreen/>}></Route>
-    //     <Route path='/order/:mood' element={<MainMenu />}></Route>
-    //     <Route path="/cart" element={<CartScreen/>}></Route>
-    //     <Route path="/checkout" element={<CheckoutScreen/>}></Route>
-    //     <Route path="/orders" element={<OrderConfirmationScreen />} />
-    //     <Route path="/admin/orders" element={<AdminOrdersPage/>}  />
-    //     <Route path="/payment" element={<PaymentScreen/>}  />
-
-
-    //     <Route path='/admin' element={<AdminPage/>}></Route>
-    //     </Routes>
-    //     </CartProvider>
- 
-        
-    //   </Paper>
-    // </Container>
-
-    // </ThemeProvider>
 
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        <Navbar user={user} onLogout={handleLogout} />
         <main className="flex-grow">
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/menu" element={<Menu />} />
-              <Route path="/reservations" element={<Reservations />} />
+              <Route path="/support" element={<Support />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </AnimatePresence>
         </main>
