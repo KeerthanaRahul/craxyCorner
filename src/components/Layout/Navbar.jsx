@@ -38,7 +38,9 @@ const Navbar = ({ user, onLogout }) => {
     { name: 'Menu', path: '/menu' },
     { name: 'Support', path: '/support' },
     { name: 'Gallery', path: '/gallery' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Feedback', path: '/feedback' },
+    { name: 'Orders', path: '/orders' },
+    { name: 'Support Tickets', path: '/support-tickets' },
   ];
 
   return (

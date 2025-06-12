@@ -55,12 +55,32 @@ const Support = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       
-      // Simulate API call
+      // Simulate API call and save to localStorage
       setTimeout(() => {
+        const ticket = {
+          ...formState,
+          id: Date.now(),
+          submittedAt: new Date().toLocaleString(),
+          status: 'open',
+          estimatedResolution: getEstimatedResolution(formState.priority)
+        };
+        
+        const existingTickets = JSON.parse(localStorage.getItem('supportTickets')) || [];
+        localStorage.setItem('supportTickets', JSON.stringify([...existingTickets, ticket]));
+        
         setIsSubmitting(false);
         setIsSubmitted(true);
         setFormState(initialFormState);
       }, 1500);
+    }
+  };
+
+  const getEstimatedResolution = (priority) => {
+    switch (priority) {
+      case 'high': return 'Within 5-10 minutes';
+      case 'medium': return 'Within 15-30 minutes';
+      case 'low': return 'Within 30-60 minutes';
+      default: return 'Within 30 minutes';
     }
   };
 
@@ -107,12 +127,19 @@ const Support = () => {
                 <p className="text-sm text-accent-500 mb-8">
                   Expected response time: 5-10 minutes for urgent issues, 15-30 minutes for general inquiries.
                 </p>
-                <button 
-                  onClick={() => setIsSubmitted(false)}
-                  className="btn btn-primary"
-                >
-                  Submit Another Request
-                </button>
+                <div className="space-y-4">
+                  <button 
+                    onClick={() => setIsSubmitted(false)}
+                    className="btn btn-primary"
+                  >
+                    Submit Another Request
+                  </button>
+                  <div>
+                    <a href="/support-tickets" className="btn btn-outline">
+                      View My Support Tickets
+                    </a>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="card">

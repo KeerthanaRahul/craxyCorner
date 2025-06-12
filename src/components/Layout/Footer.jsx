@@ -56,28 +56,23 @@ const Footer = () => {
                 <Link to="/gallery" className="text-primary-100 hover:text-white transition-colors duration-300">Gallery</Link>
               </li>
               <li>
-                <Link to="/contact" className="text-primary-100 hover:text-white transition-colors duration-300">Contact</Link>
+                <Link to="/feedback" className="text-primary-100 hover:text-white transition-colors duration-300">Feedback</Link>
               </li>
             </ul>
           </div>
 
-          {/* Hours */}
+          {/* Customer Services */}
           <div>
-            <h3 className="font-serif text-lg font-bold mb-4 text-secondary-500">Opening Hours</h3>
+            <h3 className="font-serif text-lg font-bold mb-4 text-secondary-500">Customer Services</h3>
             <ul className="space-y-2">
-              <li className="flex items-start">
-                <Clock size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
-                <div>
-                  <p className="font-medium">Monday - Friday</p>
-                  <p className="text-primary-200">7:00 AM - 8:00 PM</p>
-                </div>
+              <li>
+                <Link to="/orders" className="text-primary-100 hover:text-white transition-colors duration-300">Track Orders</Link>
               </li>
-              <li className="flex items-start">
-                <Clock size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
-                <div>
-                  <p className="font-medium">Saturday - Sunday</p>
-                  <p className="text-primary-200">8:00 AM - 9:00 PM</p>
-                </div>
+              <li>
+                <Link to="/support-tickets" className="text-primary-100 hover:text-white transition-colors duration-300">Support Tickets</Link>
+              </li>
+              <li>
+                <Link to="/cart" className="text-primary-100 hover:text-white transition-colors duration-300">My Cart</Link>
               </li>
             </ul>
           </div>
@@ -99,6 +94,19 @@ const Footer = () => {
                 <p>hello@aromacafe.com</p>
               </li>
             </ul>
+            
+            <div className="mt-6">
+              <h4 className="font-serif text-lg font-bold mb-2 text-secondary-500">Hours</h4>
+              <div className="flex items-start">
+                <Clock size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
+                <div>
+                  <p className="font-medium">Monday - Friday</p>
+                  <p className="text-primary-200">7:00 AM - 8:00 PM</p>
+                  <p className="font-medium mt-1">Saturday - Sunday</p>
+                  <p className="text-primary-200">8:00 AM - 9:00 PM</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

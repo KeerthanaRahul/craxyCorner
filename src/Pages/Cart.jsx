@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Minus, Plus, Trash2, ArrowRight, MapPin } from 'lucide-react';
+import { Minus, Plus, Trash2, ArrowRight, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
-// import { PayPalButtons } from '@paypal/react-paypal-js';
 import useCartStore from '../components/Store/cartStore';
+import { v4 as uuidv4 } from 'uuid';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, getTotal, clearCart } = useCartStore();
   const [error, setError] = useState(null);
   const [selectedTable, setSelectedTable] = useState('');
+  const [phone, setPhone] = useState('');
   const [tableError, setTableError] = useState('');
+  const [phoneError, setPhoneError] = useState();
 
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity < 1) {
@@ -18,13 +20,18 @@ const Cart = () => {
       updateQuantity(itemId, newQuantity);
     }
   };
+  
 
   const validateTableSelection = () => {
     if (!selectedTable) {
       setTableError('Please select a table number');
       return false;
+    } else if (!phone) {
+      setPhoneError('Please enter your phone number');
+      return false
     }
     setTableError('');
+    setPhoneError('');
     return true;
   };
 
@@ -63,7 +70,7 @@ const Cart = () => {
   };
 
   const onApprove = (data, actions) => {
-    return actions.order.capture().then(function(details) {
+    return actions.order.capture().then(function (details) {
       clearCart();
       setSelectedTable('');
       alert(`Transaction completed! Your order has been placed for Table ${selectedTable}. Thank you for your purchase.`);
@@ -90,6 +97,29 @@ const Cart = () => {
         </div>
       </div>
     );
+  }
+
+  const handlePayment = async() => {
+    const user = JSON.parse(localStorage.getItem('cafeUser'));
+    const res = await fetch('http://localhost:8082/api/v1/orders/addOrder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: items,
+        tableNumber: selectedTable,
+        customerPhoneNumber: phone,
+        customerEmail: user.email,
+        customerName: user.name,
+        status: 'pending',
+        'id': uuidv4(),
+        totalAmount: (getTotal() * 1.08).toFixed(2)
+      }),
+    });
+    const data = await res.json();
+    window.location.href = data?.data?.link_url;
+    clearCart();
   }
 
   return (
@@ -158,7 +188,7 @@ const Cart = () => {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-soft p-6">
               <h2 className="font-serif text-xl font-bold text-primary-800 mb-4">Order Summary</h2>
-              
+
               {/* Table Selection */}
               <div className="mb-6">
                 <label className="block text-accent-700 mb-2 font-medium">
@@ -187,7 +217,25 @@ const Cart = () => {
                   Please select an available table for dine-in service
                 </p>
               </div>
-              
+              <div className="mb-4">
+                <Phone className="inline h-4 w-4 mr-2" />
+                <label htmlFor="email" className="text-accent-700 font-medium mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="phone"
+                  id="phone"
+                  name="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 ${phoneError
+                      ? 'border-red-300 focus:border-red-500'
+                      : 'border-accent-200 focus:border-primary-500'
+                    }`}
+                  placeholder="Enter your Phone Number"
+                />
+              </div>
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-accent-600">
                   <span>Subtotal</span>
@@ -222,13 +270,7 @@ const Cart = () => {
                 </div>
               )}
 
-              {/* <PayPalButtons
-                createOrder={createOrder}
-                onApprove={onApprove}
-                onError={onError}
-                style={{ layout: "vertical" }}
-                disabled={!selectedTable}
-              /> */}
+             <button disabled={!phone || !selectedTable} className="btn btn-outline w-full mt-4" onClick={handlePayment}>Pay</button>
 
               <Link
                 to="/menu"
@@ -238,7 +280,7 @@ const Cart = () => {
               </Link>
 
               <p className="text-sm text-accent-600 mt-4 text-center">
-                Secure checkout powered by PayPal
+                Secure checkout powered by CashFree
               </p>
             </div>
           </div>

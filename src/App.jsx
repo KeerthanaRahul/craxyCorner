@@ -13,6 +13,8 @@ import Footer from "./components/Layout/Footer";
 import Cart from "./Pages/Cart";
 import Support from "./Pages/Support";
 import Landing from './Pages/Landing';
+import OrderTracking from './Pages/OrderTracking';
+import SupportTracking from './Pages/SupportTracking';
 
 
 const theme= createTheme({
@@ -92,6 +94,8 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/orders" element={<OrderTracking />} />
+              <Route path="/support-tickets" element={<SupportTracking />} />
             </Routes>
           </AnimatePresence>
         </main>
