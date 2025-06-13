@@ -15,6 +15,7 @@ import Support from "./Pages/Support";
 import Landing from './Pages/Landing';
 import OrderTracking from './Pages/OrderTracking';
 import SupportTracking from './Pages/SupportTracking';
+import Feedback from './Pages/Feedback';
 
 
 const theme= createTheme({
@@ -92,6 +93,7 @@ function App() {
               <Route path="/menu" element={<Menu />} />
               <Route path="/support" element={<Support />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/feedback" element={<Feedback />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/orders" element={<OrderTracking />} />

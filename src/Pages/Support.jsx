@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, MessageSquare, Send, CheckCircle, HelpCircle, Clock, AlertCircle } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
+import Loader from '../components/Loader/Loader';
+import ErrorModal from '../components/Layout/ErrorModal';
+import SuccessModal from '../components/Layout/SuccessModal';
 
 const initialFormState = {
   name: '',
@@ -16,6 +20,9 @@ const Support = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorModal, setErrorModal] = useState({ isOpen: false, title: '', message: '' });
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: '', message: '' });
 
   const problemTypes = [
     { value: 'order', label: 'Order Issue' },
@@ -29,7 +36,7 @@ const Support = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formState.name.trim()) newErrors.name = 'Name is required';
     if (!formState.email.trim()) {
       newErrors.email = 'Email is required';
@@ -39,7 +46,7 @@ const Support = () => {
     if (!formState.tableNumber) newErrors.tableNumber = 'Table number is required';
     if (!formState.problemType) newErrors.problemType = 'Problem type is required';
     if (!formState.description.trim()) newErrors.description = 'Problem description is required';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -51,27 +58,11 @@ const Support = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setIsSubmitting(true);
-      
-      // Simulate API call and save to localStorage
-      setTimeout(() => {
-        const ticket = {
-          ...formState,
-          id: Date.now(),
-          submittedAt: new Date().toLocaleString(),
-          status: 'open',
-          estimatedResolution: getEstimatedResolution(formState.priority)
-        };
-        
-        const existingTickets = JSON.parse(localStorage.getItem('supportTickets')) || [];
-        localStorage.setItem('supportTickets', JSON.stringify([...existingTickets, ticket]));
-        
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setFormState(initialFormState);
-      }, 1500);
+      addSupportTicket()
+      setFormState(initialFormState);
     }
   };
 
@@ -93,11 +84,68 @@ const Support = () => {
     }
   };
 
+  const addSupportTicket = async () => {
+    let payload = {
+      id: uuidv4(),
+      customerName: formState.name,
+      customerEmail: formState.email,
+      tableNumber: formState.tableNumber,
+      problemType: formState.problemType,
+      problemDesc: formState.description,
+      priority: formState.priority,
+      status: 'open',
+      estimatedResolution: getEstimatedResolution(formState.priority)
+    };
+    setIsLoading(true);
+    try {
+      const res = await fetch(`http://localhost:8082/api/v1/support/addSupport`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        setErrorModal({
+          isOpen: true,
+          title: 'Create Support Failed',
+          message: 'Failed to create support. Please try again.',
+          details: 'Unknown error occurred'
+        });
+      } else {
+        setSuccessModal({
+          isOpen: true,
+          title: 'Support Added',
+          message: `Support has been successfully created.`
+        });
+        setIsSubmitted(true);
+      }
+    } catch (error) {
+      setErrorModal({
+        isOpen: true,
+        title: 'Create Support Failed',
+        message: 'Failed to add support. Please try again.',
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
+      });
+    } finally {
+      setIsLoading(false);
+      setIsSubmitting(false);
+    }
+  };
+
+  const closeErrorModal = () => {
+    setErrorModal({ isOpen: false, title: '', message: '' });
+  };
+
+  const closeSuccessModal = () => {
+    setSuccessModal({ isOpen: false, title: '', message: '' });
+  };
+
   return (
     <div className="pt-16">
-      {/* Hero Banner */}
-      <div className="relative h-80 bg-cover bg-center flex items-center justify-center" 
-        style={{ 
+      {isLoading && <Loader showLoader={(isLoading)} />}
+      <div className="relative h-80 bg-cover bg-center flex items-center justify-center"
+        style={{
           backgroundImage: "url('https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750')"
         }}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -128,7 +176,7 @@ const Support = () => {
                   Expected response time: 5-10 minutes for urgent issues, 15-30 minutes for general inquiries.
                 </p>
                 <div className="space-y-4">
-                  <button 
+                  <button
                     onClick={() => setIsSubmitted(false)}
                     className="btn btn-primary"
                   >
@@ -147,7 +195,7 @@ const Support = () => {
                   <MessageSquare className="h-8 w-8 text-primary-800 mr-3" />
                   <h2 className="text-2xl font-serif font-bold text-primary-800">Report an Issue</h2>
                 </div>
-                
+
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
@@ -177,7 +225,7 @@ const Support = () => {
                       {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label htmlFor="tableNumber" className="block text-accent-700 mb-1">
@@ -219,7 +267,7 @@ const Support = () => {
                       {errors.problemType && <p className="text-red-500 text-sm mt-1">{errors.problemType}</p>}
                     </div>
                   </div>
-                  
+
                   <div className="mb-4">
                     <label htmlFor="priority" className="block text-accent-700 mb-1">Priority Level</label>
                     <select
@@ -238,7 +286,7 @@ const Support = () => {
                       {formState.priority.charAt(0).toUpperCase() + formState.priority.slice(1)} Priority
                     </div>
                   </div>
-                  
+
                   <div className="mb-6">
                     <label htmlFor="description" className="block text-accent-700 mb-1">Problem Description *</label>
                     <textarea
@@ -254,9 +302,9 @@ const Support = () => {
                       The more details you provide, the better we can assist you.
                     </p>
                   </div>
-                  
-                  <button 
-                    type="submit" 
+
+                  <button
+                    type="submit"
                     className="btn btn-primary w-full flex items-center justify-center"
                     disabled={isSubmitting}
                   >
@@ -283,7 +331,7 @@ const Support = () => {
                 <HelpCircle className="h-8 w-8 text-primary-800 mr-3" />
                 <h2 className="text-2xl font-serif font-bold text-primary-800">How We Can Help</h2>
               </div>
-              
+
               <div className="space-y-6">
                 <div>
                   <h3 className="font-bold text-lg mb-3">Response Times</h3>
@@ -302,7 +350,7 @@ const Support = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="font-bold text-lg mb-3">Common Issues We Handle</h3>
                   <ul className="list-disc pl-5 space-y-2 text-accent-700">
@@ -316,7 +364,7 @@ const Support = () => {
                     <li>Accessibility assistance</li>
                   </ul>
                 </div>
-                
+
                 <div>
                   <h3 className="font-bold text-lg mb-3">Immediate Assistance</h3>
                   <p className="text-accent-700 mb-4">
@@ -329,13 +377,13 @@ const Support = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* FAQ Section */}
             <div className="card">
               <h3 className="font-serif text-xl font-bold text-primary-800 mb-4">
                 Frequently Asked Questions
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <h4 className="font-medium text-primary-800 mb-1">How long does it take to resolve issues?</h4>
@@ -358,6 +406,19 @@ const Support = () => {
           </motion.div>
         </div>
       </div>
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={closeErrorModal}
+        title={errorModal.title}
+        message={errorModal.message}
+        details={errorModal.details}
+      />
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={closeSuccessModal}
+        title={successModal.title}
+        message={successModal.message}
+      />
     </div>
   );
 };

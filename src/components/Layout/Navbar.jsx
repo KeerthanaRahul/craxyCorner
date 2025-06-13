@@ -79,7 +79,7 @@ const Navbar = ({ user, onLogout }) => {
           
           {/* Cart Icon */}
           <div className={`${isScrolled ? 'text-primary-800' : 'text-white'}`}>
-            <CartIcon />
+            <CartIcon isScrolled={isScrolled} />
           </div>
 
           {/* User Menu */}

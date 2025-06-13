@@ -4,6 +4,8 @@ import { Minus, Plus, Trash2, ArrowRight, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import useCartStore from '../components/Store/cartStore';
 import { v4 as uuidv4 } from 'uuid';
+import { TrendingUpRounded } from '@material-ui/icons';
+import Loader from '../components/Loader/Loader';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, getTotal, clearCart } = useCartStore();
@@ -12,6 +14,8 @@ const Cart = () => {
   const [phone, setPhone] = useState('');
   const [tableError, setTableError] = useState('');
   const [phoneError, setPhoneError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity < 1) {
@@ -100,30 +104,41 @@ const Cart = () => {
   }
 
   const handlePayment = async() => {
+    setIsLoading(true);
     const user = JSON.parse(localStorage.getItem('cafeUser'));
-    const res = await fetch('http://localhost:8082/api/v1/orders/addOrder', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        items: items,
-        tableNumber: selectedTable,
-        customerPhoneNumber: phone,
-        customerEmail: user.email,
-        customerName: user.name,
-        status: 'pending',
-        'id': uuidv4(),
-        totalAmount: (getTotal() * 1.08).toFixed(2)
-      }),
-    });
-    const data = await res.json();
-    window.location.href = data?.data?.link_url;
-    clearCart();
+    console.log(items);
+    const updatedItems = items?.map(item => ({...item, price: (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}))
+    try {
+      const res = await fetch('http://localhost:8082/api/v1/orders/addOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: updatedItems,
+          tableNumber: selectedTable,
+          customerPhoneNumber: phone,
+          customerEmail: user.email,
+          customerName: user.name,
+          status: 'pending',
+          'id': uuidv4(),
+          totalAmount: (getTotal() * 1.08).toFixed(2),
+          from: 'cafe'
+        }),
+      });
+      const data = await res.json();
+      window.location.href = data?.data?.link_url;
+      clearCart();
+    } catch(error) {
+
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="pt-32 pb-16">
+      {isLoading && <Loader showLoader={(isLoading)} />}
       <div className="container-custom">
         <h1 className="text-3xl font-serif font-bold text-primary-800 mb-8">Your Cart</h1>
 

@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Clock, CheckCircle, AlertCircle, User, Calendar } from 'lucide-react';
+import Loader from '../components/Loader/Loader';
 
 const SupportTracking = () => {
   const [supportTickets, setSupportTickets] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem('cafeUser'));
+
+  const getSupports = async() => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`http://localhost:8082/api/v1/support/getSupport`);
+      const data = await res.json();
+      const userTracking = data?.supportList.filter(el => el.customerEmail === user.email)
+      setSupportTickets(userTracking)
+      } catch (error) {
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const storedTickets = JSON.parse(localStorage.getItem('supportTickets')) || [];
-    setSupportTickets(storedTickets);
+    getSupports();
   }, []);
 
   const getStatusIcon = (status) => {
@@ -49,9 +65,15 @@ const SupportTracking = () => {
     }
   };
 
+  function convertSecondsToDate(seconds) {
+    const milliseconds = seconds * 1000;
+    const date = new Date(milliseconds);
+    return date.toDateString();
+  }
+
   return (
     <div className="pt-16">
-      {/* Hero Banner */}
+      {isLoading && <Loader showLoader={(isLoading)} />}
       <div className="relative h-80 bg-cover bg-center flex items-center justify-center" 
         style={{ 
           backgroundImage: "url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750')"
@@ -66,7 +88,7 @@ const SupportTracking = () => {
       </div>
 
       <div className="container-custom py-16">
-        {supportTickets.length === 0 ? (
+        {!isLoading && supportTickets.length === 0 ? (
           <div className="text-center">
             <MessageSquare className="h-16 w-16 text-accent-400 mx-auto mb-4" />
             <h2 className="text-2xl font-serif font-bold text-primary-800 mb-4">No Support Tickets</h2>
@@ -99,7 +121,7 @@ const SupportTracking = () => {
                     <div className="flex items-center text-sm text-accent-600 space-x-4">
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-1" />
-                        {ticket.submittedAt}
+                        {convertSecondsToDate(ticket.createdAt._seconds)}
                       </div>
                       <div className="flex items-center">
                         <User className="h-4 w-4 mr-1" />
@@ -117,7 +139,7 @@ const SupportTracking = () => {
 
                 <div className="bg-primary-50 rounded-lg p-4 mb-4">
                   <h4 className="font-medium text-primary-800 mb-2">Issue Description:</h4>
-                  <p className="text-accent-700">{ticket.description}</p>
+                  <p className="text-accent-700">{ticket.problemDesc}</p>
                 </div>
 
                 {ticket.responses && ticket.responses.length > 0 && (

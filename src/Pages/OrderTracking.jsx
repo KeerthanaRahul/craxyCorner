@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Package, Clock, CheckCircle, Truck, ChefHat, AlertCircle } from 'lucide-react';
+import Loader from '../components/Loader/Loader';
 
 const OrderTracking = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem('cafeUser'));
+
+  function convertSecondsToDate(seconds) {
+    const milliseconds = seconds * 1000;
+    const date = new Date(milliseconds);
+    return date.toDateString();
+  }
 
   const getOrders = async() => {
     setIsLoading(true);
@@ -78,7 +85,7 @@ const OrderTracking = () => {
 
   return (
     <div className="pt-16">
-      {/* Hero Banner */}
+      {isLoading && <Loader showLoader={(isLoading)} />}
       <div className="relative h-80 bg-cover bg-center flex items-center justify-center" 
         style={{ 
           backgroundImage: "url('https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750')"
@@ -93,7 +100,7 @@ const OrderTracking = () => {
       </div>
 
       <div className="container-custom py-16">
-        {orders.length === 0 ? (
+        {!isLoading && orders.length === 0 ? (
           <div className="text-center">
             <Package className="h-16 w-16 text-accent-400 mx-auto mb-4" />
             <h2 className="text-2xl font-serif font-bold text-primary-800 mb-4">No Orders Yet</h2>
@@ -116,7 +123,7 @@ const OrderTracking = () => {
                     <h3 className="text-xl font-serif font-bold text-primary-800 mb-2">
                       Order #{order.id}
                     </h3>
-                    <p className="text-accent-600">Placed on {order.createdAt?._seconds}</p>
+                    <p className="text-accent-600">Placed on {convertSecondsToDate(order.createdAt?._seconds)}</p>
                     <p className="text-accent-600">Total: ₹{order.totalAmount}</p>
                   </div>
                   <div className="mt-4 lg:mt-0 text-right">
