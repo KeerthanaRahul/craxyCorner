@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Send, CheckCircle, MessageSquare, ThumbsUp, Heart } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
+import Loader from '../components/Loader/Loader';
+import ErrorModal from '../components/Layout/ErrorModal';
+import SuccessModal from '../components/Layout/SuccessModal';
 
 const initialFormState = {
   name: '',
@@ -8,9 +12,9 @@ const initialFormState = {
   orderNumber: '',
   rating: 0,
   category: '',
-  feedback: '',
+  description: '',
   wouldRecommend: '',
-  improvements: ''
+  suggestions: ''
 };
 
 const Feedback = () => {
@@ -19,6 +23,9 @@ const Feedback = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [hoveredStar, setHoveredStar] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorModal, setErrorModal] = useState({ isOpen: false, title: '', message: '' });
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: '', message: '' });
 
   const feedbackCategories = [
     { value: 'food-quality', label: 'Food Quality' },
@@ -41,7 +48,7 @@ const Feedback = () => {
     }
     if (formState.rating === 0) newErrors.rating = 'Please provide a rating';
     if (!formState.category) newErrors.category = 'Please select a feedback category';
-    if (!formState.feedback.trim()) newErrors.feedback = 'Feedback is required';
+    if (!formState.description.trim()) newErrors.description = 'Feedback is required';
     if (!formState.wouldRecommend) newErrors.wouldRecommend = 'Please let us know if you would recommend us';
     
     setErrors(newErrors);
@@ -62,23 +69,8 @@ const Feedback = () => {
     
     if (validateForm()) {
       setIsSubmitting(true);
-      
-      // Simulate API call and save to localStorage
-      setTimeout(() => {
-        const feedback = {
-          ...formState,
-          id: Date.now(),
-          submittedAt: new Date().toLocaleString(),
-          status: 'received'
-        };
-        
-        const existingFeedback = JSON.parse(localStorage.getItem('customerFeedback')) || [];
-        localStorage.setItem('customerFeedback', JSON.stringify([...existingFeedback, feedback]));
-        
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setFormState(initialFormState);
-      }, 1500);
+      addFeedback()
+      setFormState(initialFormState);
     }
   };
 
@@ -93,9 +85,65 @@ const Feedback = () => {
     }
   };
 
+  const addFeedback = async () => {
+    let payload = {
+      id: uuidv4(),
+      customerName: formState.name,
+      customerEmail: formState.email,
+      orderNumber: formState.orderNumber,
+      rating: formState.rating,
+      category: formState.category,
+      description: formState.description,
+      wouldRecommend: formState.wouldRecommend,
+    };
+    setIsLoading(true);
+    try {
+      const res = await fetch(`http://localhost:8082/api/v1/feedback/addFeedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        setErrorModal({
+          isOpen: true,
+          title: 'Create Feedback Failed',
+          message: 'Failed to create feedback. Please try again.',
+          details: 'Unknown error occurred'
+        });
+      } else {
+        setSuccessModal({
+          isOpen: true,
+          title: 'Feedback Sent',
+          message: `Feedback has been successfully sent.`
+        });
+        setIsSubmitted(true);
+      }
+    } catch (error) {
+      setErrorModal({
+        isOpen: true,
+        title: 'Create Feedback Failed',
+        message: 'Failed to create feedback. Please try again.',
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
+      });
+    } finally {
+      setIsLoading(false);
+      setIsSubmitting(false);
+    }
+  };
+
+  const closeErrorModal = () => {
+    setErrorModal({ isOpen: false, title: '', message: '' });
+  };
+
+  const closeSuccessModal = () => {
+    setSuccessModal({ isOpen: false, title: '', message: '' });
+  };
+
   return (
     <div className="pt-16">
-      {/* Hero Banner */}
+      {isLoading && <Loader showLoader={(isLoading)} />}
       <div className="relative h-80 bg-cover bg-center flex items-center justify-center" 
         style={{ 
           backgroundImage: "url('https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750')"
@@ -233,16 +281,16 @@ const Feedback = () => {
                   </div>
                   
                   <div className="mb-4">
-                    <label htmlFor="feedback" className="block text-accent-700 mb-1">Your Feedback *</label>
+                    <label htmlFor="description" className="block text-accent-700 mb-1">Your Feedback *</label>
                     <textarea
-                      id="feedback"
-                      name="feedback"
-                      value={formState.feedback}
+                      id="description"
+                      name="description"
+                      value={formState.description}
                       onChange={handleChange}
-                      className={`form-input min-h-[120px] ${errors.feedback ? 'border-red-500' : ''}`}
+                      className={`form-input min-h-[120px] ${errors.description ? 'border-red-500' : ''}`}
                       placeholder="Please share your detailed feedback about your experience..."
                     ></textarea>
-                    {errors.feedback && <p className="text-red-500 text-sm mt-1">{errors.feedback}</p>}
+                    {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
                   </div>
 
                   <div className="mb-4">
@@ -287,11 +335,11 @@ const Feedback = () => {
                   </div>
                   
                   <div className="mb-6">
-                    <label htmlFor="improvements" className="block text-accent-700 mb-1">Suggestions for Improvement (Optional)</label>
+                    <label htmlFor="suggestions" className="block text-accent-700 mb-1">Suggestions for Improvement (Optional)</label>
                     <textarea
-                      id="improvements"
-                      name="improvements"
-                      value={formState.improvements}
+                      id="suggestions"
+                      name="suggestions"
+                      value={formState.suggestions}
                       onChange={handleChange}
                       className="form-input min-h-[100px]"
                       placeholder="How can we improve your experience?"
@@ -383,6 +431,19 @@ const Feedback = () => {
           </motion.div>
         </div>
       </div>
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={closeErrorModal}
+        title={errorModal.title}
+        message={errorModal.message}
+        details={errorModal.details}
+      />
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        onClose={closeSuccessModal}
+        title={successModal.title}
+        message={successModal.message}
+      />
     </div>
   );
 };

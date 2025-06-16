@@ -15,6 +15,8 @@ const Cart = () => {
   const [tableError, setTableError] = useState('');
   const [phoneError, setPhoneError] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
+  window.scroll(0, 0);
   
 
   const handleQuantityChange = (itemId, newQuantity) => {
@@ -51,11 +53,11 @@ const Cart = () => {
           breakdown: {
             item_total: {
               value: getTotal().toFixed(2),
-              currency_code: "USD"
+              currency_code: "INR"
             },
             tax_total: {
               value: (getTotal() * 0.08).toFixed(2),
-              currency_code: "USD"
+              currency_code: "INR"
             }
           }
         },
@@ -63,8 +65,8 @@ const Cart = () => {
           name: item.name,
           description: item.description,
           unit_amount: {
-            value: item.price.replace('$', ''),
-            currency_code: "USD"
+            value: item.price,
+            currency_code: "INR"
           },
           quantity: item.quantity
         })),
@@ -107,7 +109,7 @@ const Cart = () => {
     setIsLoading(true);
     const user = JSON.parse(localStorage.getItem('cafeUser'));
     console.log(items);
-    const updatedItems = items?.map(item => ({...item, price: (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}))
+    const updatedItems = items?.map(item => ({...item, price: (parseFloat(item.price) * item.quantity).toFixed(2)}))
     try {
       const res = await fetch('http://localhost:8082/api/v1/orders/addOrder', {
         method: 'POST',
@@ -130,7 +132,6 @@ const Cart = () => {
       window.location.href = data?.data?.link_url;
       clearCart();
     } catch(error) {
-
     } finally {
       setIsLoading(false)
     }
@@ -183,7 +184,7 @@ const Cart = () => {
                       </div>
                       <div className="flex items-center space-x-4">
                         <span className="font-medium text-secondary-500">
-                          ${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}
+                        ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                         </span>
                         <button
                           onClick={() => removeItem(item.id)}
@@ -254,17 +255,17 @@ const Cart = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-accent-600">
                   <span>Subtotal</span>
-                  <span>${getTotal().toFixed(2)}</span>
+                  <span>₹{getTotal().toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-accent-600">
                   <span>Tax (8%)</span>
-                  <span>${(getTotal() * 0.08).toFixed(2)}</span>
+                  <span>₹{(getTotal() * 0.08).toFixed(2)}</span>
                 </div>
                 <div className="border-t border-accent-200 pt-3">
                   <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
                     <span className="text-secondary-500">
-                      ${(getTotal() * 1.08).toFixed(2)}
+                    ₹{(getTotal() * 1.08).toFixed(2)}
                     </span>
                   </div>
                 </div>

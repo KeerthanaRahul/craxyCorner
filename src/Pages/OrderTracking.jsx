@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Package, Clock, CheckCircle, Truck, ChefHat, AlertCircle } from 'lucide-react';
 import Loader from '../components/Loader/Loader';
+import Modal from '../components/Layout/Modal';
+import Button from '../components/Layout/Button';
 
 const OrderTracking = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCancelOrderLoading, setIsCancelOrderLoading] = useState(false);
+  const [cancelModal, setCancelModal] = useState({ isOpen: false, orderId: null });
+  const [cancelReason, setCancelReason] = useState('');
+  const [isCancelling, setIsCancelling] = useState(false);
   const user = JSON.parse(localStorage.getItem('cafeUser'));
 
   function convertSecondsToDate(seconds) {
@@ -14,7 +20,7 @@ const OrderTracking = () => {
     return date.toDateString();
   }
 
-  const getOrders = async() => {
+  const getOrders = async () => {
     setIsLoading(true);
     try {
       const res = await fetch(`http://localhost:8082/api/v1/orders/getOrders`);
@@ -28,7 +34,7 @@ const OrderTracking = () => {
         ]
       }))
       setOrders(ordersWithStatus)
-      } catch (error) {
+    } catch (error) {
     } finally {
       setIsLoading(false)
     }
@@ -83,11 +89,78 @@ const OrderTracking = () => {
     }
   };
 
+  const canCancelOrder = (status) => {
+    return status === 'confirmed' || status === 'preparing' || status === 'pending';
+  };
+
+  const handleCancelOrder = (orderId) => {
+    setCancelModal({ isOpen: true, orderId });
+    setCancelReason('');
+  };
+
+  const confirmCancelOrder = async () => {
+    if (!cancelReason.trim()) {
+      alert('Please provide a reason for cancellation');
+      return;
+    }
+    setIsCancelling(true);
+    try {     
+      let payload = { id: cancelModal.orderId, reason: cancelReason };
+      setIsCancelOrderLoading(true);
+        const res = await fetch(`http://localhost:8082/api/v1/orders/cancelOrder`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        getOrders();
+
+      setCancelModal({ isOpen: false, orderId: null });
+      setCancelReason('');
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      alert('Failed to cancel order. Please try again.');
+    } finally {
+      setIsCancelling(false);
+      setIsCancelOrderLoading(false)
+    }
+  };
+
+  const closeCancelModal = () => {
+    setCancelModal({ isOpen: false, orderId: null });
+    setCancelReason('');
+  };
+
+  const cancelReasons = [
+    'Changed my mind',
+    'Ordered by mistake',
+    'Taking too long',
+    'Need to modify order',
+    'Emergency came up',
+    'Other'
+  ];
+
+  const modalFooter = (
+    <div className="flex gap-3">
+      <Button variant="outline" onClick={closeCancelModal}>
+        Keep Order
+      </Button>
+      <Button
+        variant="danger"
+        onClick={confirmCancelOrder}
+        disabled={isCancelling || !cancelReason.trim()}
+      >
+        {isCancelling ? 'Cancelling...' : 'Cancel Order'}
+      </Button>
+    </div>
+  );
+
   return (
     <div className="pt-16">
-      {isLoading && <Loader showLoader={(isLoading)} />}
-      <div className="relative h-80 bg-cover bg-center flex items-center justify-center" 
-        style={{ 
+      {(isLoading || isCancelOrderLoading) && <Loader showLoader={(isLoading || isCancelOrderLoading)} />}
+      <div className="relative h-80 bg-cover bg-center flex items-center justify-center"
+        style={{
           backgroundImage: "url('https://images.pexels.com/photos/4393021/pexels-photo-4393021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750')"
         }}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -125,33 +198,46 @@ const OrderTracking = () => {
                     </h3>
                     <p className="text-accent-600">Placed on {convertSecondsToDate(order.createdAt?._seconds)}</p>
                     <p className="text-accent-600">Total: ₹{order.totalAmount}</p>
+                    {order.status === 'cancelled' && order.cancellationReason && (
+                      <p className="text-red-600 text-sm mt-1">
+                        Cancelled: {order.cancellationReason}
+                      </p>
+                    )}
                   </div>
                   <div className="mt-4 lg:mt-0 text-right">
                     <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
                       {getStatusIcon(order.status)}
                       <span className="ml-2 capitalize">{order.status}</span>
                     </div>
-                    {order.status !== 'delivered' && (
+                    {order.status !== 'delivered' && order.status !== 'cancelled' && (
                       <p className="text-sm text-accent-600 mt-2">
                         Estimated ready time: {order.estimatedTime}
                       </p>
+                    )}
+                    {canCancelOrder(order.status) && (
+                      <button
+                        onClick={() => handleCancelOrder(order.id)}
+                        className="mt-2 px-3 py-1 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                      >
+                        Cancel Order
+                      </button>
                     )}
                   </div>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="mb-6">
+                {order.status !== 'cancelled' && (<div className="mb-6">
                   <div className="flex justify-between text-sm text-accent-600 mb-2">
                     <span>Order Progress</span>
                     <span>{getProgressPercentage(order.status)}%</span>
                   </div>
                   <div className="w-full bg-accent-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-secondary-500 h-2 rounded-full transition-all duration-500"
                       style={{ width: `${getProgressPercentage(order.status)}%` }}
                     ></div>
                   </div>
-                </div>
+                </div>)}
 
                 {/* Order Items */}
                 <div className="mb-6">
@@ -173,6 +259,60 @@ const OrderTracking = () => {
           </div>
         )}
       </div>
+      <Modal
+        isOpen={cancelModal.isOpen}
+        onClose={closeCancelModal}
+        title="Cancel Order"
+        footer={modalFooter}
+      >
+        <div className="space-y-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+              <span className="font-medium text-red-800">Are you sure you want to cancel this order?</span>
+            </div>
+            <p className="text-red-700 mt-1 text-sm">
+              This action cannot be undone. Please select a reason for cancellation.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Reason for cancellation *
+            </label>
+            <div className="space-y-2">
+              {cancelReasons.map((reason) => (
+                <label key={reason} className="flex items-center">
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value={reason}
+                    checked={cancelReason === reason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                    className="mr-2"
+                  />
+                  <span className="text-sm">{reason}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {cancelReason === 'Other' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Please specify
+              </label>
+              <textarea
+                value={cancelReason === 'Other' ? '' : cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                rows="3"
+                placeholder="Please provide details..."
+              />
+            </div>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };
