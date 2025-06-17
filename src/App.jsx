@@ -96,6 +96,7 @@ function App() {
               <Route path="/feedback" element={<Feedback />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/cart/:linkId" element={<Cart />} />
               <Route path="/orders" element={<OrderTracking />} />
               <Route path="/support-tickets" element={<SupportTracking />} />
             </Routes>

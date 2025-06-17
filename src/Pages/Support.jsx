@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, MessageSquare, Send, CheckCircle, HelpCircle, Clock, AlertCircle } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +16,8 @@ const initialFormState = {
 };
 
 const Support = () => {
+  const user = JSON.parse(localStorage.getItem('cafeUser'));
+
   const [formState, setFormState] = useState(initialFormState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +35,13 @@ const Support = () => {
     { value: 'technical', label: 'Technical Support' },
     { value: 'other', label: 'Other' }
   ];
+
+  useEffect(() => {
+    if(user) {
+      setFormState(prev => ({...prev, name: user.name, email: user.email}))
+    }
+  }, [])
+  
 
   const validateForm = () => {
     const newErrors = {};

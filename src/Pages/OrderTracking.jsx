@@ -32,7 +32,7 @@ const OrderTracking = () => {
         statusHistory: order.statusHistory || [
           { status: 'confirmed', time: order.time, message: 'Order confirmed' }
         ]
-      }))
+      })).sort((a,b) => b.createdAt._seconds - a.createdAt._seconds)
       setOrders(ordersWithStatus)
     } catch (error) {
     } finally {
