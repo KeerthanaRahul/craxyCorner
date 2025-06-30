@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { MapPin, Calendar, HelpCircle } from 'lucide-react';
 
 // Components
-import Hero from '../components/home/Hero';
-import FeaturedItems from '../components/home/FeaturedItems';
-import About from '../components/home/About';
-import Testimonials from '../components/home/Testimonials';
+import FeaturedItems from '../components/Home/FeaturedItems';
+import About from '../components/Home/About';
+import Testimonials from '../components/Home/Testimonials';
+import Hero from '../components/Home/Hero';
 
 const Home = ({ user }) => {
   return (

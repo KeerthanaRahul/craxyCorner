@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   return (
     <section className="relative h-screen flex items-center">
-      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750" 
