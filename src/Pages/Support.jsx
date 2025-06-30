@@ -107,7 +107,7 @@ const Support = () => {
     };
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:8082/api/v1/support/addSupport`, {
+      const res = await fetch(`https://tasteflowbackend.onrender.com/api/v1/support/addSupport`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

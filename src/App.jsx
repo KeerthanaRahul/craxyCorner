@@ -42,7 +42,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already registered
     const storedUser = localStorage.getItem('cafeUser');
     if (storedUser) {
       try {
