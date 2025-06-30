@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Coffee, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CartIcon from '../cart/CartIcon';
+import CartIcon from '../Cart/CartIcon';
 
 const Navbar = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);

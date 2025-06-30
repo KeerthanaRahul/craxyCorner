@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import useCartStore from '../../components/Store/cartStore';
 
 const CartIcon = ({ isScrolled }) => {
-  const itemCount = useCartStore((state) => state.getItemCount());
+  const itemCount = useCartStore((state) => state.getItemCount())
 
   return (
     <Link to="/cart" className="relative">
