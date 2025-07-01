@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Coffee, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CartIcon from '../Cart/CartIcon';
+import logo from '../../assets/logo.png'
 
 const Navbar = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,7 @@ const Navbar = ({ user, onLogout }) => {
     >
       <div className="container-custom flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <Coffee 
+          <img src={logo}
             className={`h-8 w-8 mr-2 ${isScrolled ? 'text-primary-800' : 'text-white'}`} 
           />
           <span 
@@ -59,7 +60,7 @@ const Navbar = ({ user, onLogout }) => {
               isScrolled ? 'text-primary-800' : 'text-white'
             }`}
           >
-            Aroma Cafe
+            MoodSync Cafe
           </span>
         </Link>
 

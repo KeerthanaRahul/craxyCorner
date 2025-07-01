@@ -6,18 +6,23 @@ const About = () => {
   const features = [
     {
       icon: <Coffee className="h-10 w-10 text-secondary-500" />,
+      title: ' Mood-Based Menu Experience',
+      description: 'We curate your meals based on how youre feeling — happy, stressed, excited, or even lazy — because food should feel just right.'
+    },
+    {
+      icon: <Coffee className="h-10 w-10 text-secondary-500" />,
       title: 'Quality Ingredients',
-      description: 'We source the finest beans from sustainable farms around the world and prepare them with care.'
+      description: 'Our ingredients are sustainably sourced, and each dish is made with care by passionate chefs who believe in quality without compromise.'
     },
     {
       icon: <Users className="h-10 w-10 text-secondary-500" />,
       title: 'Community Focus',
-      description: 'Our cafe is designed to be a welcoming space where neighbors become friends.'
+      description: 'Whether youre here for work, a quick bite, or conversation, our café is designed to be a welcoming, inclusive space.'
     },
     {
       icon: <Award className="h-10 w-10 text-secondary-500" />,
       title: 'Award Winning',
-      description: 'Recognized for excellence in both our coffee and cuisine by local and national organizations.'
+      description: 'From tech-driven kiosks to mood-responsive menus, we’re proud to be recognized as pioneers in redefining the café experience.'
     }
   ];
 
@@ -39,9 +44,9 @@ const About = () => {
               />
               <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-medium max-w-xs hidden md:block">
                 <p className="font-serif text-primary-800 text-lg italic">
-                  "Every cup tells a story. We're just here to help write it."
+                  "Every mood deserves a meal. That’s the idea we built this café on"
                 </p>
-                <p className="text-right text-sm text-accent-600 mt-2">- Maria, Founder</p>
+                <p className="text-right text-sm text-accent-600 mt-2"> Founder</p>
               </div>
             </div>
           </motion.div>
@@ -54,12 +59,12 @@ const About = () => {
           >
             <h2 className="section-title">Our Story</h2>
             <p className="mb-6 text-lg">
-              Aroma Cafe was born from a simple yet powerful vision: to create a space where exceptional coffee, 
-              delicious food, and genuine community could thrive together.
+              At MopdSync Cafe, it all began with a simple yet bold idea — to craft a space where great food, personalized experiences, and a sense of community come together seamlessly.
             </p>
             <p className="mb-10 text-accent-600">
-              Since opening our doors in 2010, we've been dedicated to crafting memorable experiences for every guest. 
-              Our team of passionate baristas, chefs, and servers work tirelessly to ensure that each visit exceeds your expectations.
+              Since our launch in 2010, we’ve been committed to delivering more than just meals. We believe food should match your mood, and every visit should feel personal. From handpicked ingredients to our intuitive self-ordering kiosks, everything is designed to make your time with us enjoyable, effortless, and uniquely yours.
+
+
             </p>
 
             <div className="space-y-6">

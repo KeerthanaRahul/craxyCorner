@@ -5,25 +5,25 @@ import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
-    name: 'Emily Johnson',
-    role: 'Regular Customer',
-    content: 'Aroma Cafe has become my go-to spot for both work and relaxation. The atmosphere is perfect, and their house blend is simply unmatched anywhere else in the city.',
+    name: 'Aanya Mehta',
+    role: 'College Student',
+    content: "MoodSync cafe has completely redefined ordering food for me. I love how it understands my mood and suggests just the right comfort food.",
     rating: 5,
     image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750'
   },
   {
     id: 2,
-    name: 'Michael Rodriguez',
-    role: 'Food Blogger',
-    content: 'As someone who visits cafes professionally, I can say with confidence that Aroma Cafe stands out with their attention to detail and quality in both their coffee and food offerings.',
+    name: ' Neha Bhandari',
+    role: 'Tech Analyst',
+    content: "I had a rough day and picked ‘Stressed’ — got the most comforting pasta and dessert combo. That felt personal.",
     rating: 5,
     image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750'
   },
   {
     id: 3,
-    name: 'Sarah Thompson',
-    role: 'Local Artist',
-    content: 'I\'ve spent countless hours sketching in this cafe. The staff is always welcoming, and they\'ve created a space that truly nurtures creativity and community.',
+    name: 'Rohit Verma',
+    role: ' Working Professional',
+    content: "It's intuitive, fast, and the food is always on point. I no longer wait for staff — I just tap and enjoy!",
     rating: 4,
     image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750'
   }

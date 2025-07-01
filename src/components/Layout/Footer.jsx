@@ -20,11 +20,10 @@ const Footer = () => {
           <div>
             <div className="flex items-center mb-4">
               <Coffee className="h-8 w-8 mr-2 text-secondary-500" />
-              <span className="font-serif text-xl font-bold">Aroma Cafe</span>
+              <span className="font-serif text-xl font-bold">MoodSync Cafe</span>
             </div>
             <p className="text-primary-100 mb-6">
-              Bringing you the finest coffee experience since 2010. Our passion for quality and 
-              community drives everything we do.
+             Good moods. Great food. Since 2010, that’s the MoodSync Corner promise.
             </p>
             <div className="flex space-x-4">
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-primary-100 hover:text-secondary-500 transition-colors duration-300">
@@ -83,7 +82,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-start">
                 <MapPin size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
-                <p>123 Coffee Street, Brewville, CA 90210</p>
+                <p>12th Cross, Indiranagar,Bangalore- 560038</p>
               </li>
               <li className="flex items-start">
                 <Phone size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
@@ -91,7 +90,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start">
                 <Mail size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
-                <p>hello@aromacafe.com</p>
+                <p>hello@moodsynccafe.com</p>
               </li>
             </ul>
             
@@ -101,9 +100,9 @@ const Footer = () => {
                 <Clock size={18} className="mr-2 mt-1 flex-shrink-0 text-primary-200" />
                 <div>
                   <p className="font-medium">Monday - Friday</p>
-                  <p className="text-primary-200">7:00 AM - 8:00 PM</p>
+                  <p className="text-primary-200">10:00 AM - 8:00 PM</p>
                   <p className="font-medium mt-1">Saturday - Sunday</p>
-                  <p className="text-primary-200">8:00 AM - 9:00 PM</p>
+                  <p className="text-primary-200">9:00 AM - 9:00 PM</p>
                 </div>
               </div>
             </div>
@@ -112,7 +111,7 @@ const Footer = () => {
 
         <div className="border-t border-primary-700 mt-12 pt-8 text-center">
           <p className="text-primary-200">
-            &copy; {new Date().getFullYear()} Aroma Cafe. All rights reserved.
+            &copy; {new Date().getFullYear()} MoodSync Cafe. All rights reserved.
           </p>
         </div>
       </div>

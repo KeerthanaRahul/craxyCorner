@@ -47,21 +47,13 @@ const Home = ({ user }) => {
           className="relative container-custom text-center text-white"
         >
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
-            Experience the Perfect Blend
+            Where Every Mood Finds a Flavor
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join us for a cup of coffee and discover why our customers keep coming back.
+            Step into a world of taste that understands how you feel - curated comfort in every bite
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/contact" className="btn btn-primary flex items-center justify-center">
-              <MapPin className="mr-2 h-5 w-5" />
-              Find Us
-            </Link>
-            <Link to="/support" className="btn bg-secondary-500 text-white hover:bg-secondary-600 flex items-center justify-center">
-              <HelpCircle className="mr-2 h-5 w-5" />
-              Need Help?
-            </Link>
-          </div>
+          
+          
         </motion.div>
       </section>
       
@@ -73,13 +65,13 @@ const Home = ({ user }) => {
           <div className="text-center mb-12">
             <h2 className="section-title">Follow Us on Instagram</h2>
             <p className="section-subtitle">
-              Share your Aroma Cafe moments with us using #AromaCafeMoments
+              Share your Craxy Cafe moments with us using #CraxyCafeMoments
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              "https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?auto=compress&cs=tinysrgb&w=600",
+              "https://www.pexels.com/photo/a-croissant-near-the-cup-of-coffee-on-the-table-14457052/",
               "https://images.pexels.com/photos/1002740/pexels-photo-1002740.jpeg?auto=compress&cs=tinysrgb&w=600",
               "https://images.pexels.com/photos/1566816/pexels-photo-1566816.jpeg?auto=compress&cs=tinysrgb&w=600",
               "https://images.pexels.com/photos/4051221/pexels-photo-4051221.jpeg?auto=compress&cs=tinysrgb&w=600"

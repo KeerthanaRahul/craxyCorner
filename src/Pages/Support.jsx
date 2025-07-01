@@ -408,7 +408,7 @@ const Support = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-primary-800 mb-1">Is there WiFi available?</h4>
-                  <p className="text-accent-600 text-sm">Yes! Network: "AromaCafe_Guest" | Password: "coffee2024"</p>
+                  <p className="text-accent-600 text-sm">Yes! Network: "MoodSyncCafe_Guest" | Password: "mood2025"</p>
                 </div>
               </div>
             </div>

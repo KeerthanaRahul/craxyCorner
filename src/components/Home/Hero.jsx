@@ -23,12 +23,11 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="max-w-3xl"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Experience the Art of <span className="text-secondary-500">Perfect Coffee</span>
+          <h1 style={{ textAlign: 'justify' }} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            Where Mood Meets<span className="text-secondary-500"> Menu</span>
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-gray-100">
-            Handcrafted beverages, artisanal pastries, and a warm atmosphere 
-            to make every visit memorable.
+          <p style={{ textAlign: 'justify' }} className="text-lg md:text-xl mb-8 text-gray-100">
+            Choose your vibe, explore our menu, and enjoy food that understands you
           </p>
           <div className="flex flex-wrap gap-4">
             <Link to="/menu" className="btn btn-primary">
