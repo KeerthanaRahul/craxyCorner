@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Coffee, User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CartIcon from '../Cart/CartIcon';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo2.png'
 
 const Navbar = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,6 +54,7 @@ const Navbar = ({ user, onLogout }) => {
         <Link to="/" className="flex items-center">
           <img src={logo}
             className={`h-8 w-8 mr-2 ${isScrolled ? 'text-primary-800' : 'text-white'}`} 
+            style={{ height: 50, width: 50 }}
           />
           <span 
             className={`font-serif text-xl font-bold ${
