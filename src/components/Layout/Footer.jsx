@@ -10,6 +10,7 @@ import {
   Phone, 
   Mail 
 } from 'lucide-react';
+import logo from '../../assets/logo2.png'
 
 const Footer = () => {
   return (
@@ -19,7 +20,7 @@ const Footer = () => {
           {/* Logo and About */}
           <div>
             <div className="flex items-center mb-4">
-              <Coffee className="h-8 w-8 mr-2 text-secondary-500" />
+              <img src={logo} style={{ height: 50, width: 50 }}/>
               <span className="font-serif text-xl font-bold">MoodSync Cafe</span>
             </div>
             <p className="text-primary-100 mb-6">

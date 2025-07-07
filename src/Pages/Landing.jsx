@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Coffee, ArrowRight, Users, Award, Heart } from 'lucide-react';
+import logo from '../assets/logo2.png'
 
 const Landing = ({ onUserRegistered }) => {
   const [formData, setFormData] = useState({
@@ -86,13 +87,13 @@ const Landing = ({ onUserRegistered }) => {
               className="flex items-center justify-center lg:justify-start mb-8"
             >
               <div className="relative">
-                <Coffee className="h-16 w-16 text-primary-800 mr-4" />
+                <img src={logo} style={{ height: 100, width: 100 }}/>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary-500 rounded-full flex items-center justify-center">
                   <Heart className="h-3 w-3 text-white" />
                 </div>
               </div>
               <div>
-                <h1 className="font-serif text-4xl font-bold text-primary-800">Aroma Cafe</h1>
+                <h1 className="font-serif text-4xl font-bold text-primary-800">MoodSync Cafe</h1>
                 <p className="text-secondary-600 font-medium">Exceptional Coffee & Cuisine</p>
               </div>
             </motion.div>
@@ -105,7 +106,7 @@ const Landing = ({ onUserRegistered }) => {
               className="mb-8"
             >
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary-800 mb-4">
-                Welcome to Your Perfect Coffee Experience
+                Welcome to Your Perfect Cafe Experience
               </h2>
               <p className="text-lg text-accent-600 mb-6 leading-relaxed">
                 Step into a world where every cup tells a story and every meal is crafted with passion. 
