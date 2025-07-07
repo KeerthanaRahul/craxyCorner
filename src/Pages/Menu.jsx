@@ -28,7 +28,7 @@ const Menu = () => {
       const moodsList = moods.map(el => el.moods).flat();
       const removeDup = [...new Set(moodsList)];
       let finalMoods = removeDup?.map(el => ({ id: el, label: el }));
-      finalMoods.unshift({ id: 'all', label: 'All Items' });
+      finalMoods.unshift({ id: 'all', label: 'All' });
       setMoodFilters(finalMoods);
       handleFilters(data?.foodList);
     } catch (error) {
@@ -96,7 +96,7 @@ const Menu = () => {
 
       <div className="container-custom py-16">
         <div className="mb-8 overflow-x-auto">
-          <div className="flex space-x-4 justify-center pb-2">
+          <div className="flex space-x-4 pb-2">
             {moodFilters.map(filter => {
               return (
                 <button

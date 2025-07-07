@@ -29,7 +29,7 @@ const FeaturedItems = () => {
       const moodsList = moods.map(el => el.moods).flat();
       const removeDup = [...new Set(moodsList)];
       let finalMoods = removeDup?.map(el => ({ id: el, label: el }));
-      finalMoods.unshift({ id: 'all', label: 'All Items' });
+      finalMoods.unshift({ id: 'all', label: 'All' });
       setMoodFilters(finalMoods);
       handleFilters(featuredItems);
     } catch (error) {
@@ -91,7 +91,7 @@ const FeaturedItems = () => {
           </p>
 
           {/* Mood Filter */}
-          <div className="flex justify-center space-x-4 mb-8">
+          <div className="flex space-x-4 mb-8 overflow-x-auto">
             {moodFilters.map(filter => {
               return (
                 <button
