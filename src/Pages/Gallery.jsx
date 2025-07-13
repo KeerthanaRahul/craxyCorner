@@ -90,7 +90,7 @@ const galleryImages = [
   },
   {
     id: 14,
-    src: 'https://images.pexels.com/photos/3738339/pexels-photo-3738339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
+    src: 'https://i.postimg.cc/m2fTYTRh/pexels-photo-2615323.jpg',
     alt: 'Live music night',
     category: 'events'
   },
