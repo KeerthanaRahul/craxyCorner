@@ -5,7 +5,7 @@ import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
-    name: 'Aanya Mehta',
+    name: 'Richi Mehta',
     role: 'College Student',
     content: "MoodSync cafe has completely redefined ordering food for me. I love how it understands my mood and suggests just the right comfort food.",
     rating: 5,
@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     id: 2,
-    name: ' Neha Bhandari',
+    name: ' Nehanth Bhandari',
     role: 'Tech Analyst',
     content: "I had a rough day and picked ‘Stressed’ — got the most comforting pasta and dessert combo. That felt personal.",
     rating: 5,
@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     id: 3,
-    name: 'Rohit Verma',
+    name: 'Vinnitha Verma',
     role: ' Working Professional',
     content: "It's intuitive, fast, and the food is always on point. I no longer wait for staff — I just tap and enjoy!",
     rating: 4,
