@@ -94,7 +94,7 @@ const Landing = ({ onUserRegistered }) => {
               </div>
               <div>
                 <h1 className="font-serif text-4xl font-bold text-primary-800">MoodSync Cafe</h1>
-                <p className="text-secondary-600 font-medium">Exceptional Coffee & Cuisine</p>
+                <p className="text-secondary-600 font-medium">Exceptional Cuisine</p>
               </div>
             </motion.div>
 
