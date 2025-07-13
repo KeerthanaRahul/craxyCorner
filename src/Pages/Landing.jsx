@@ -159,7 +159,7 @@ const Landing = ({ onUserRegistered }) => {
                     Join Our Cafe Family
                   </h3>
                   <p className="text-accent-600">
-                    Enter your details to start your personalized coffee journey
+                    Enter your details to start your personalized mood journey
                   </p>
                 </div>
 
