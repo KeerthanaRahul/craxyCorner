@@ -65,13 +65,13 @@ const Home = ({ user }) => {
           <div className="text-center mb-12">
             <h2 className="section-title">Follow Us on Instagram</h2>
             <p className="section-subtitle">
-              Share your Craxy Cafe moments with us using #CraxyCafeMoments
+              Share your Moodsync Cafe moments with us using #MoodsyncCafeMoments
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              "https://www.pexels.com/photo/a-croissant-near-the-cup-of-coffee-on-the-table-14457052/",
+              "https://i.postimg.cc/m2fTYTRh/pexels-photo-2615323.jpg",
               "https://images.pexels.com/photos/1002740/pexels-photo-1002740.jpeg?auto=compress&cs=tinysrgb&w=600",
               "https://images.pexels.com/photos/1566816/pexels-photo-1566816.jpeg?auto=compress&cs=tinysrgb&w=600",
               "https://images.pexels.com/photos/4051221/pexels-photo-4051221.jpeg?auto=compress&cs=tinysrgb&w=600"
