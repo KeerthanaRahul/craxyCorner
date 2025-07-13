@@ -74,7 +74,7 @@ const Home = ({ user }) => {
               "https://i.postimg.cc/m2fTYTRh/pexels-photo-2615323.jpg",
               "https://images.pexels.com/photos/1002740/pexels-photo-1002740.jpeg?auto=compress&cs=tinysrgb&w=600",
               "https://images.pexels.com/photos/1566816/pexels-photo-1566816.jpeg?auto=compress&cs=tinysrgb&w=600",
-              "https://images.pexels.com/photos/4051221/pexels-photo-4051221.jpeg?auto=compress&cs=tinysrgb&w=600"
+              "https://i.postimg.cc/ZKstfZzr/pexels-photo-1775043.jpg"
             ].map((image, index) => (
               <motion.div
                 key={index}
