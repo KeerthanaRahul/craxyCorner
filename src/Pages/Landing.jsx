@@ -109,8 +109,8 @@ const Landing = ({ onUserRegistered }) => {
                 Welcome to Your Perfect Cafe Experience
               </h2>
               <p className="text-lg text-accent-600 mb-6 leading-relaxed">
-                Step into a world where every cup tells a story and every meal is crafted with passion. 
-                Join our community of coffee lovers and food enthusiasts.
+                Step into a world where every mood tells a story and every meal is crafted with passion. 
+                Join our community of food enthusiasts.
               </p>
             </motion.div>
 
