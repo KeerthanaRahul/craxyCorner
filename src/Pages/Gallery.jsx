@@ -96,7 +96,7 @@ const galleryImages = [
   },
   {
     id: 15,
-    src: 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750',
+    src: 'https://i.postimg.cc/mkCKxYS1/pexels-photo-2079438.jpg',
     alt: 'Coffee tasting event',
     category: 'events'
   },
