@@ -138,6 +138,7 @@ const OrderTracking = () => {
     'Taking too long',
     'Need to modify order',
     'Emergency came up',
+    "Angry",
     'Other'
   ];
 
